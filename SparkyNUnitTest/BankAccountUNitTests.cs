@@ -122,7 +122,7 @@ namespace SparkyNUnitTest
             Assert.That(logMock.Object.LogSeverity, Is.EqualTo(10));
             Assert.That(logMock.Object.LogType,Is.EqualTo("Warning"));
 
-            //se llama cada vez.
+            //Callback
             string logTemp = "Hello, ";
             logMock.Setup(u => u.LogToDb(It.IsAny<string>()))
                 .Returns(true).Callback((string str) => logTemp += str);
@@ -139,6 +139,18 @@ namespace SparkyNUnitTest
             Assert.That(counter, Is.EqualTo(9));
 
 
+        }
+        [Test]
+        public void BankLogDummy_VerifyExample()
+        {
+            var logMock = new Mock<ILogBook>();
+            BankAccount bankAccount = new(logMock.Object);
+            bankAccount.Deposit(100);
+            
+            Assert.That(bankAccount.GetBalance, Is.EqualTo(100));
+
+            //Verification
+            logMock.Verify(u => u.Message(It.IsAny<string>()), Times.Exactly(2));
         }
     }
 }
