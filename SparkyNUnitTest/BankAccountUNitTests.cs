@@ -151,6 +151,7 @@ namespace SparkyNUnitTest
 
             //Verification
             logMock.Verify(u => u.Message(It.IsAny<string>()), Times.Exactly(2));
+            logMock.Verify(u => u.LogSeverity, Times.Once);
         }
     }
 }
