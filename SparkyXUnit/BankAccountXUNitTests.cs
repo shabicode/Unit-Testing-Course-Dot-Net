@@ -1,25 +1,20 @@
 ﻿using Moq;
 using Sparky;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SparkyNUnitTest
-{ 
+{
     public class BankAccountXUNitTests
     {
-        private BankAccount account; 
-        
+        private BankAccount account;
+
         [Fact]
         public void BankDepositLogFakker_Add100_ReturnTrue()
         {
             BankAccount bankAccount = new(new LogFakker());
             var result = bankAccount.Deposit(100);
             Assert.True(result);
-            Assert.Equal(100,bankAccount.GetBalance());
+            Assert.Equal(100, bankAccount.GetBalance());
         }
         [Fact]
         public void BankDeposit_Add100_ReturnTrue()
@@ -81,7 +76,7 @@ namespace SparkyNUnitTest
 
             logMock.Setup(x => x.MessageWithReturnStr(It.IsAny<string>())).Returns((string str) => str.ToLower());
 
-            Assert.Equal(desireOutput,logMock.Object.MessageWithReturnStr("Hello"));
+            Assert.Equal(desireOutput, logMock.Object.MessageWithReturnStr("Hello"));
         }
         [Fact]
         public void BankLogDummy_LogMockStringOutputStr_ReturnTrue()
@@ -92,7 +87,7 @@ namespace SparkyNUnitTest
             logMock.Setup(x => x.LogWithOutputResult(It.IsAny<string>(), out desireOutput)).Returns(true);
             string result = "";
             Assert.True(logMock.Object.LogWithOutputResult("Ben", out result));
-            Assert.Equal(desireOutput,result);
+            Assert.Equal(desireOutput, result);
         }
         [Fact]
         public void BankLogDummy_LogRefChecker_ReturnTrue()
@@ -114,15 +109,15 @@ namespace SparkyNUnitTest
             logMock.Setup(u => u.LogType).Returns("Warning");
 
 
-            Assert.Equal(10,logMock.Object.LogSeverity );
-            Assert.Equal("Warning",logMock.Object.LogType);
+            Assert.Equal(10, logMock.Object.LogSeverity);
+            Assert.Equal("Warning", logMock.Object.LogType);
 
             //Callback
             string logTemp = "Hello, ";
             logMock.Setup(u => u.LogToDb(It.IsAny<string>()))
                 .Returns(true).Callback((string str) => logTemp += str);
             logMock.Object.LogToDb("Ben");
-            Assert.Equal("Hello, Ben",logTemp);
+            Assert.Equal("Hello, Ben", logTemp);
 
             int counter = 5;
             logMock.Setup(u => u.LogToDb(It.IsAny<string>()))
@@ -131,7 +126,7 @@ namespace SparkyNUnitTest
                 .Callback(() => counter++);
             logMock.Object.LogToDb("Ben");
             logMock.Object.LogToDb("Ben");
-            Assert.Equal(9,counter);
+            Assert.Equal(9, counter);
 
 
         }
